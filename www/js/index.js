@@ -49,7 +49,7 @@ app.initialize();
 
 function loadDefault()
 {
-    var listview = $('ul[data-role="listview"][data-alphabet="true"]');
+    var listview = $('#mainlistview');
 
     cdb.executeSql("SELECT `_rowid_` id,nome,livello from magie;", [], function (res) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -236,7 +236,7 @@ function bindEvents()
         var prms = $('#filtermenu').serializeObject();
         var sql = "SELECT m.`_rowid_` id, m.nome nome, m.livello livello FROM `magie` m left join `categorie` c on c.nome = m.nome where 1=1 ";
 
-        var listview = $('ul[data-role="listview"][data-alphabet="true"]');
+        var listview = $('#mainlistview');
 
         if (prms.hasOwnProperty("name")&& prms.name.length)
         {
