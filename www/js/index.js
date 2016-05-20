@@ -68,10 +68,10 @@ function loadDefault()
             var row = res.rows.item(i);
             classeslist.append(TemplateEngine($('#classesHTML').html(), row));
         }
-        listview.alphabetlist();
+        classeslist.trigger('create');
     }, function (error) {
         alert('SELECT error: ' + error.message);
-    });    
+    });
 }
 
 
@@ -203,12 +203,12 @@ function bindEvents()
         if (lists.length)
             lists.alphabetlist('redraw');
     });
-    $('#mainlistview').on("click",".listviewrow",function()
+    $('#mainlistview').on("click", ".listviewrow", function ()
     {
         var id = $(this).attr('data-id');
         cdb.executeSql("SELECT m.`_rowid_` id,m.*,group_concat(c.classe) as classe  \
                             FROM `magie` m left join `categorie` c on c.nome = m.nome  \
-                            where id = ? group by m.nome ORDER BY `nome` ASC ", [id], function (res) 
+                            where id = ? group by m.nome ORDER BY `nome` ASC ", [id], function (res)
         {
             if (res.rows.length)
             {
@@ -219,5 +219,65 @@ function bindEvents()
             alert('SELECT error: ' + error.message);
         });
     });
+    $('#checkbox-1a').click(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#classeslist [type="checkbox"]').each(function ()
+        {
+            $(this).prop('checked', true).checkboxradio('refresh');
+        });
+        return false;
+    });
+    $('#resetbutton').click(function () {
+        location.reload();
+    });
+    $('#submitbutton').click(function ()
+    {
+        var prms = $('#filtermenu').serializeObject();
+        var sql = "SELECT m.`_rowid_` id, m.nome nome, m.livello livello FROM `magie` m left join `categorie` c on c.nome = m.nome where 1=1 ";
 
+        var listview = $('ul[data-role="listview"][data-alphabet="true"]');
+
+        if (prms.hasOwnProperty("name")&& prms.name.length)
+        {
+            sql += "AND m.nome like '%"+prms.name+"%' ";
+        }
+        
+        if (prms.hasOwnProperty("levelmin"))
+        {
+            sql += "AND m.livello >= "+prms.levelmin+" ";
+        }
+        if (prms.hasOwnProperty("levelmax"))
+        {
+            sql += "AND m.livello <= "+prms.levelmax+" ";
+        }
+        
+        if (prms.hasOwnProperty("classes"))
+        {
+            if( Object.prototype.toString.call( prms.classes ) === '[object Array]' ) {
+                sql += "AND c.classe IN ('"+prms.classes.join("','")+"') ";
+            }
+            else
+            sql += "AND c.classe = '"+prms.classes+"' ";
+        }
+        
+        
+        sql += "  group by m.nome ORDER BY `nome` ASC";
+        cdb.executeSql(sql, [], function (res) {            
+            listview.html("");
+            for (var i = 0; i < res.rows.length; i++) {
+                var row = res.rows.item(i);
+                if (row.livello == 0)
+                    row.livello = "Trucchetto";
+                listview.append(TemplateEngine($('#listviewrow').html(), row));
+            }
+            listview.alphabetlist('refresh');
+            $("[data-role=panel]").panel("close");
+            document.body.scrollTop = 0;
+            
+        }, function (error) {
+            alert('SELECT error: ' + error.message);
+        });
+
+    });
 }

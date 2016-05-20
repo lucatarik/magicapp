@@ -12,6 +12,7 @@
         <script type="text/javascript" src="js/jquery.viewport.js"></script>
         <script type="text/javascript" src="js/jquery-mobile.alphabetlist.js"></script>
         <script type="text/javascript" src="js/templateengine.js"></script>
+        <script type="text/javascript" src="js/serializeobject.js"></script>
         <link rel="stylesheet" type="text/css" href="js/jquery-mobile.alphabetlist.css" />
 
         <title>MagicApp</title>
@@ -52,28 +53,28 @@
             <div data-role="panel" id="defaultpanel"  data-position="left">
                 <a href="#demo-links" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-btn-inline">Close panel</a>
                 <br>
-                <form>
+                <form id="filtermenu">
                     <ul data-role="listview" data-inset="false" style="    margin-left: -16px">
                         <li class="ui-field-contain">
-                            <input type="text" name="name2" id="name2" placeholder="nome" data-clear-btn="true">
+                            <input type="text" name="name" id="name" placeholder="nome" data-clear-btn="true">
                         </li>
                         <li class="ui-field-contain">
                             <small>Livello:</small>
                             <div data-role="rangeslider" data-mini="true">
-                                <input type="range" name="range-8a" id="range-8a" min="0" max="9" value="0">
-                                <input type="range" name="range-8b" id="range-8b" min="0" max="9" value="9">
+                                <input type="range" name="levelmin" id="range-8a" min="0" max="9" value="0">
+                                <input type="range" name="levelmax" id="range-8b" min="0" max="9" value="9">
                             </div>
                         </li>
                         <li class="ui-field-contain">
                             <fieldset id="classeslist" class="fullcontrolgroup" data-role="controlgroup">
-                                <input type="checkbox" name="class" id="checkbox-1a" checked="" value="1">
+                                <input type="checkbox" id="checkbox-1a" checked="" value="1">
                                 <label for="checkbox-1a">Tutte</label>
                             </fieldset>
                         </li>
                         <li class="ui-body ui-body-b">
                             <fieldset class="ui-grid-a">
-                                <div class="ui-block-a"><button type="submit" class="ui-btn ui-corner-all ui-btn-a">Cancel</button></div>
-                                <div class="ui-block-b"><button type="submit" class="ui-btn ui-corner-all ui-btn-a">Submit</button></div>
+                                <div class="ui-block-a"><button type="button" id="resetbutton" class="ui-btn ui-corner-all ui-btn-a">Reset</button></div>
+                                <div class="ui-block-b"><button  type="button" id="submitbutton"  class="ui-btn ui-corner-all ui-btn-a">Invia</button></div>
                             </fieldset>
                         </li>
                     </ul>
@@ -150,7 +151,7 @@
                 </center>
         </script>
         <script id="classesHTML" type="text/template">
-        <input type="checkbox" name="class" id="checkbox-1a{{classe}}" checked="" value="{{classe}}">
+        <input type="checkbox" name="classes" id="checkbox-1a{{classe}}" checked="" value="{{classe}}">
         <label for="checkbox-1a{{classe}}">{{classe}}</label>
         </script>
     </body>
