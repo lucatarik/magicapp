@@ -3,11 +3,10 @@
 ul[data-role="alphabetlist"] {
     color:#333333;
 
-    position:absolute;
-    right:0px;
+    position:fixed;
+    right:5px;
     top:2.0em;
-    z-index:200;
-
+    z-index:200;    
     list-style-type:none;
 
     height:100%;
